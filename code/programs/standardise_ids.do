@@ -7,6 +7,7 @@ program fix_arrest_number
     replace arrestnumber = substr(arrestnumber, 1, 2) + "-" + substr(arrestnumber, 3, .) if strlen(arrestnumber) == 8
     replace arrestnumber = subinstr(arrestnumber, "-2014", "-14", .) if regexm(arrestnumber, "-2014$")
     replace arrestnumber = substr(arrestnumber, 2, .) if substr(arrestnumber, 1, 1) == "0" & strlen(arrestnumber) == 10
+    replace arrestnumber = subinstr(arrestnumber, "20", "", 1) if substr(arrestnumber, 1, 2) == "20"
 end
 
 cap program drop fix_incident_number

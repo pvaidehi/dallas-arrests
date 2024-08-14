@@ -52,11 +52,14 @@ tempfile names_contained_3
 save `names_contained_3'
 
 
-//keep if incidentnum == "000681-2010" | 000244-2018
-
-
 use "../../data/intermediate/duplicate_incidents.dta", clear
 merge 1:1 incidentnum id using `names_contained_3', assert(match master)
+
+preserve 
+drop if _merge == 3
+save "../../data/intermediate/duplicate_incident_notcontainments.dta"
+restore 
+
 keep if _merge == 3
 drop contain1-contain65 _m
 bys incidentnum pair_id: gen unique_id = _n
@@ -65,37 +68,6 @@ summ unique_id
 local max = r(max)
 local varlist age sex race address apt city state inv data_source
 
-/* program define a 
-foreach var in `varlist' {
-    local maxnum = 0
-    
-    ds `var'*
-    local varlist_derived "`r(varlist)'"
-    foreach v of varlist `varlist_derived' {
-        local num = substr("`v'", length("`var'") + 1, .)
-        
-        if regexm("`num'", "^[0-9]+$") {
-            if real("`num'") > `maxnum' {
-                local maxnum = real("`num'")
-            }
-        }
-    }
-    local max_index = `max' *  _N
-    forvalues i = `=`maxnum' + 1' /  `max_index'{
-        gen `var'`i' = ""
-    }
-    forvalues j = 1/_N {
-        forvalues k = 2/_N {
-        local i = 
-        replace `var'`i' = `var'j[k] if _N >= `j' & _n == 1
-    }
-    }
-}
-end  */
-/* runby a, by(incidentnum pair_id) */
-
-save "../../data/intermediate/duplicate_name_containments.dta", replace
-use "../../data/intermediate/duplicate_name_containments.dta", replace
 drop total_contain contain total mult_entries 
 tostring unique_id, replace
 replace unique_id = "0" + unique_id
@@ -118,135 +90,8 @@ foreach v of varlist * {
     }
 }
 
-
-/* 
-
-// drop variables with all missing values
-foreach var of varlist _all {
-    count if mi(`var')
-    if `r(N)' == _N {
-        drop `var' 
-    }
-}
-
-// look for duplicate variables
-foreach v of varlist * {
-    foreach w of varlist * {
-        capture assert `v'==`w'
-        if _rc==0 & "`v'"!="`w'" drop `w'
-    }
-}
-
-// replace to missing if same value exists in previous variable
-local varlist age sex race address apt city state inv data_source
-foreach var in `varlist' {
-    forvalues i = 1 /`max' {
-        forvalues j = 2/`max' {
-            if `i' <`j' {
-            replace `var'`j' = "" if `var'`j' == `var'`i'
-            }
-        }
-    }
-}
- */
-
-
-
-
-
-
-
-
-
-
-
-/* ren age13 age11
-gen apt4 = apt5
-ren city8 city7
-foreach var in `varlist' {
-    local maxnum = 0
-    
-    ds `var'*
-    local varlist_derived "`r(varlist)'"
-    foreach v of varlist `varlist_derived' {
-        local num = substr("`v'", length("`var'") + 1, .)
-        
-        if regexm("`num'", "^[0-9]+$") {
-            if real("`num'") > `maxnum' {
-                local maxnum = real("`num'")
-            }
-        }
-    }
-    forvalues i = 2 /  `=`maxnum' ' {
-        forvalues j =  3 / `=`maxnum' ' {
-            replace `var'`i' = `var'`j' if mi(`var'`i') & !mi(`var'`j')
-            replace `var'`j' = "" if mi(`var'`i') & !mi(`var'`j')
-        }
-    }
-} */
-
-
-
-
-
-/* drop  _m total_contain mult_entries 
-local varlist age sex race address apt city state inv data_source
-
-foreach var in `varlist' {
-    local maxnum = 0
-    
-    ds `var'*
-    local varlist_derived "`r(varlist)'"
-    foreach v of varlist `varlist_derived' {
-        local num = substr("`v'", length("`var'") + 1, .)
-        
-        if regexm("`num'", "^[0-9]+$") {
-            if real("`num'") > `maxnum' {
-                local maxnum = real("`num'")
-            }
-        }
-    }
-    
-    forvalues i = `=`maxnum' + 1' / `=`maxnum' + 20' {
-        gen `var'`i' = ""
-        bys incidentnum pair_id (contain): replace `var'`i' = `var'1[`i'] if _N >= `i' & _n == 1
-
-    }
-}
-
-sort incidentnum name (contain) 
-forvalues i = 2 / `max' {
-    gen name`i' = ""
-} */
-
-
-/* ds contain*
-local varlist_derived "`r(varlist)'"
-local maxnum = 0
-foreach v of varlist `varlist_derived' {
-    local num = substr("`v'", length("contain") + 1, .)
-    
-    if regexm("`num'", "^[0-9]+$") {
-        if real("`num'") > `maxnum' {
-            local maxnum = real("`num'")
-        }
-    }
-} */
-/* forvalues i = 2 / `=`maxnum' + 1' {
-    qui summ contain
-    local max_contain = r(max)
-    local j = `i'-1
-    replace name`i' = name[`i' - 1]   if contain`j' == 1 & contain == `max_contain'
-} */
-/* bys incidentnum: keep if _n == 1  */
-
-
-
-
 save "../../data/intermediate/duplicate_name_containments.dta", replace
 use "../../data/intermediate/duplicate_name_containments.dta", clear
-
-
 
 local prefixes age race sex address city state zipcode data_source  id name inv servnumid
 
@@ -334,3 +179,5 @@ foreach v of varlist * {
         if _rc==0 & "`v'"!="`w'" drop `w'
     }
 }
+
+save "../../data/intermediate/duplicate_name_containments_cleaned.dta", replace
