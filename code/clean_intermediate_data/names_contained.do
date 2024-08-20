@@ -62,7 +62,7 @@ restore
 
 keep if _merge == 3
 drop contain1-contain65 _m
-bys incidentnum pair_id: gen unique_id = _n
+bys incidentnum pair_id (name): gen unique_id = _n
 sort incidentnum pair_id (unique_id)
 summ unique_id
 local max = r(max)

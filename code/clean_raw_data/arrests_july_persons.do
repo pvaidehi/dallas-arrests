@@ -14,7 +14,8 @@ save "`filename'", replace
 clear 
 
 forval y = 2010/2018 {
-    import excel "../../data/raw/D009212%23%23.xlsx", sheet(`y') firstrow,
+    import excel "../../data/raw/D009212%23%23.xlsx", sheet(`y') firstrow
+    ren *, lower
     foreach var of varlist _all {
         capture tostring `var', replace force
         capture replace `var' = trim(`var')
@@ -26,8 +27,8 @@ forval y = 2010/2018 {
 	clear
 }
 
-import excel "./../data/raw/D009212%23%23.xlsx", sheet(2014Pt2) first
-	
+import excel "../../data/raw/D009212%23%23.xlsx", sheet(2014Pt2) first
+ren *, lower
 foreach var of varlist _all {
 		capture tostring `var', replace force
 		capture replace `var' = trim(`var')

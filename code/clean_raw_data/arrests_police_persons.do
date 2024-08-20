@@ -2,28 +2,28 @@
 * POLICE ARRESTS 
 *-------------------------------------*
 include "../programs/standardise_ids.do"
-include ../programs/clean_person_chars.do
+include "../programs/clean_person_chars.do"
 
 
 insheet using "../../data/raw/Police_Arrests_7_19_19.csv", clear
+ren *, lower
 fix_arrest_number
 foreach var of varlist _all {
      tostring `var', replace force
      replace `var' = trim(`var')
      replace `var' = stritrim(`var')
-     rename `var', lower
 }
 isid incidentnum arrestnumber 
 tempfile 7_19_19
 save `7_19_19', replace
 
 insheet using "../../data/raw/Police_Arrests_3_22_20.csv", clear
+ren *, lower
 fix_arrest_number
 foreach var of varlist _all {
      tostring `var', replace force
      replace `var' = trim(`var')
      replace `var' = stritrim(`var')
-     rename `var', lower
 }
 foreach var of varlist _all {
      replace `var' = "" if `var' == "."

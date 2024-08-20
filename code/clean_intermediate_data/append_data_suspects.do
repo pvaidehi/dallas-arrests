@@ -8,10 +8,10 @@ include "../programs/clean_person_chars.do"
 include "../programs/standardise_ids.do"
 
 // import data
-use "../../data/intermediate/may_2019.dta", clear
-append using "../../data/intermediate/nov_2019.dta"
-append using "../../data/intermediate/police_persons.dta"
-append using "../../data/intermediate/july_2018.dta"
+use "../../data/intermediate/may_2019_suspects.dta", clear
+append using "../../data/intermediate/nov_2019_suspects.dta"
+append using "../../data/intermediate/police_persons_suspects.dta"
+append using "../../data/intermediate/july_2018_suspects.dta"
 
 // preliminary cleaning
 assert mi(edate) if !mi(susp_date)
@@ -114,7 +114,7 @@ drop incidentnum
 rename incidentnum_str11 incidentnum
 ren ageatoffense offenseage
 drop data_may data_nov data_police date_text
-ren age10 age13
+ren age13 age11
 ren city8 city7
 gen apt4 = apt5
 save "../../data/intermediate/incident_persons_final.dta", replace
@@ -130,7 +130,8 @@ save "../../data/intermediate/incident_persons_unique.dta", replace
 use "../../data/intermediate/incident_persons_final.dta", clear
 fix_incident_number
 bys incidentnum : gen mult_entries = _N
-bys incidentnum: gen id = _n
+bys incidentnum (name): gen id = _n
 keep if mult_entries > 1
 drop if mi(name)
+ren age13 age11
 save "../../data/intermediate/duplicate_incidents.dta", replace

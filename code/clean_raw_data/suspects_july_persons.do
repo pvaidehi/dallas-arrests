@@ -6,7 +6,9 @@ set excelxlsxlargefile on
 include "../programs/standardise_ids.do"
 include ../programs/clean_person_chars.do
 
-local filename "../../data/intermediate/july_2018.dta"
+local filename "../../data/intermediate/july_2018_incidents.dta"
+local filename2 "../../data/intermediate/july_2018_suspects.dta"
+
 // Create an initial file into which we save everything
 set obs 1
 gen empty = .
@@ -131,4 +133,4 @@ rename suspstate state
 clean_all
 keep if !mi(name)
 gen data_source = "july2018"
-save "`filename'", replace
+save "`filename2'", replace

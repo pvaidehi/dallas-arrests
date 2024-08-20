@@ -3,7 +3,7 @@
 *-------------------------------------*
 
 // file 1
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_12_28_16.csv", clear
+import delimited "../../data/raw/Police_Person_12_28_16.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race address apt city state age ageatoffensetime name edate involvement
 isid incidentnum servnumid 
@@ -14,7 +14,7 @@ tempfile 12_28_16
 save 	`12_28_16'
 
 // file 2
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_6_23_17.csv", clear
+import delimited "../../data/raw/Police_Person_6_23_17.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race address apt city state age ageatoffensetime name edate involvement
 isid incidentnum servnumid 
@@ -29,7 +29,7 @@ tempfile 6_23_17
 save 	`6_23_17'
 
 // file 3
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_11_17_17.csv", clear
+import delimited "../../data/raw/Police_Person_11_17_17.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race address apt city state age ageatoffensetime name edate involvement
 isid incidentnum servnumid 
@@ -44,7 +44,7 @@ tempfile 11_17_17
 save 	`11_17_17'
 
 // file 4
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_7_19_18.csv", clear
+import delimited "../../data/raw/Police_Person_7_19_18.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race address apt city state age ageatoffensetime name edate involvement
 isid incidentnum servnumid 
@@ -59,7 +59,7 @@ tempfile 7_19_18
 save 	`7_19_18', replace
 
 // file 5
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_7_19_19.csv", clear
+import delimited "../../data/raw/Police_Person_7_19_19.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race age ageatoffensetime name edate involvement
 isid incidentnum servnumid 
@@ -76,7 +76,7 @@ tempfile 7_19_19
 save 	`7_19_19'
 
 // file 6
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Police_Person_3_11_20.csv", clear
+import delimited "../../data/raw/Police_Person_3_11_20.csv", clear
 keep if involvement=="Suspect" | involvement=="Arrested Person" | involvement=="Arrestee"
 keep incidentnum servyr servnumid sex race age ageatoffensetime name edate involvement
 isid incidentnum servnumid
@@ -90,6 +90,6 @@ duplicates drop
 keep if !mi(name)
 tostring age, replace
 gen data_source = "police-persons"
-save "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/intermediate/police_persons.dta", replace
+save "../../data/intermediate/police_persons_suspects.dta", replace
 
 

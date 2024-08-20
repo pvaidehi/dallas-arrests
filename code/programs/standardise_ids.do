@@ -13,6 +13,7 @@ end
 cap program drop fix_incident_number
 program fix_incident_number
     args incidentnum
+    replace incidentnum = "" if incidentnum == "."
     replace incidentnum = subinstr(incidentnum, "O", "0", .)
     replace incidentnum = subinstr(incidentnum," -","-", .) 
     replace incidentnum = substr(incidentnum, 5, .) + "-" + servyr if strpos(incidentnum, "-") == 0 & strlen(incidentnum) == 11

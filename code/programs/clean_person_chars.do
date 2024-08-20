@@ -36,6 +36,7 @@ cap program drop clean_gender
 program clean_gender
     replace sex = strtrim(sex)
     replace sex = "" if inlist(sex, "Unk", "Unknown", "TEST")
+    replace sex = "" if inlist(sex, "7663", "423 E LEDBETTER DR APT 321")
 end 
 
 // race
@@ -44,10 +45,13 @@ program clean_race
     replace race = strtrim(race)
     replace race = "" if inlist(race, "Unk", "Unknown", "NULL", "TEST", "Test")
     replace race = "" if inlist(race, "Null", "N", "A", "U", "O")
-    replace race = "Native American"  if strpos(race, "Indian")
+    replace race = "Native American"  if strpos(race, "Indian") 
     replace race = "Asian American/Pacific Islander" if strpos(race, "Asian")
     replace race = "White" if race == "W"
     replace race = "Black" if race == "B"
+    replace race = "" if race == "134" | race == "NorthEast"
+    replace race = "Native Hawaiian/Pacific Islander " if strpos(race, "Hawaiian")
+
     cap confirm variable ethnic
     if _rc != 0 {
     replace race = "Hispanic" if inlist(race, "Latin", "Latin/Hispanic", "Hispanic or Latino", "Latin / Hispanic")

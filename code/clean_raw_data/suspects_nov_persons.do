@@ -3,7 +3,7 @@
 *-------------------------------------*
 
 // nov 2019 - 2005-2011
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Suspect_2005_2011.csv", clear
+import delimited "../../data/raw/Suspect_2005_2011.csv", clear
 duplicates drop
 tostring servyr, replace force
 destring age, replace force
@@ -29,7 +29,7 @@ tempfile persons_nov_05_10
 save     `persons_nov_05_10'
 
 // nov 2019 - 2011-2014
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Suspect_2012_2014.csv", clear
+import delimited "../../data/raw/Suspect_2012_2014.csv", clear
 tostring servyr, replace force
 destring age, replace force
 rename incidentnum ix
@@ -60,7 +60,7 @@ tempfile persons_nov_04_14
 save     `persons_nov_04_14', replace
 
 // nov 2019 - 2013-2019
-import delimited "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/raw/Suspect_2014_2019.csv", clear
+import delimited "../../data/raw/Suspect_2014_2019.csv", clear
 fix_incident_number   // about 18 bad IDs 
 clean_all
 destring servyr, replace force
@@ -96,4 +96,4 @@ keep servyr edate involvement name address city state race sex age incidentnum p
 gen data_source = "nov2019"
 tostring servyr, replace
 tostring age, replace
-save "/Users/vaidehiparameswaran/Dropbox/arrests/dallas-arrests/data/intermediate/nov_2019.dta", replace
+save "../../data/intermediate/nov_2019_suspects.dta", replace
